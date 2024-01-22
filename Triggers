@@ -1,0 +1,64 @@
+
+-- Triger uniemożliwiający wstawianie rezerwacji, jeśli Date_From jest większe niż Date_To:
+CREATE TRIGGER PreventInvalidReservation
+BEFORE INSERT
+ON Reservations
+FOR EACH ROW
+BEGIN
+    IF NEW.Date_From >= NEW.Date_To THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nieprawidłowe daty rezerwacji.';
+    END IF;
+END;
+
+-- Wstaw nową rezerwację z datą początkową większą niż data końcowa (co powinno spowodować błąd)
+INSERT INTO Reservations (Reservation_ID, Client_ID, Reservation_Status, Date_From, Date_To, Created_Date)
+VALUES (7, 1, 2, '2024-03-05 18:00:00', '2024-03-01 20:00:00', '2024-03-01 14:00:00');
+
+
+CREATE TRIGGER PreventReservationWithoutAvailableTables
+BEFORE INSERT
+ON Reservations
+FOR EACH ROW
+BEGIN
+    DECLARE total_tables INT;
+    DECLARE occupied_tables INT;
+
+    -- Znajdź ogólną liczbę stolików
+    SELECT COUNT(*) INTO total_tables
+    FROM Tables;
+
+    -- Znajdź liczbę zajętych stolików w nowej rezerwacji
+    SELECT COUNT(DISTINCT Table_ID) INTO occupied_tables
+    FROM Reservation_Details
+    WHERE Reservation_ID = NEW.Reservation_ID;
+
+    -- Jeśli wszystkie stoliki są zajęte, zwróć błąd
+    IF occupied_tables >= total_tables THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Brak dostępnych stolików dla nowej rezerwacji.';
+    END IF;
+END;
+
+
+-- Trigger aktualizujący pole Total_Amount w tabeli Orders po dodaniu nowego produktu do zamówienia
+
+CREATE TRIGGER UpdateOrderTotalAmount
+AFTER INSERT
+ON Order_Details
+FOR EACH ROW
+BEGIN
+    -- Aktualizuj pole Total_Amount w tabeli Orders
+    UPDATE Orders
+    SET Total_Amount = (
+        SELECT SUM(Price * Amount)
+        FROM Order_Details
+        JOIN Products ON Order_Details.Product_ID = Products.Product_ID
+        WHERE Order_Details.Order_ID = NEW.Order_ID
+    )
+    WHERE Order_ID = NEW.Order_ID;
+END;
+
+
+
+
+

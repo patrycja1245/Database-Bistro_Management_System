@@ -1,0 +1,60 @@
+
+-- Funkcja oblicza łączny koszt wszystkich zamówień dla określonego klienta.
+CREATE FUNCTION CalculateTotalOrderCostForClient(clientID INT) RETURNS DECIMAL(10, 2)
+BEGIN
+    DECLARE totalCost DECIMAL(10, 2);
+
+    SELECT SUM(Products.Price * Order_Details.Amount) INTO totalCost
+    FROM Orders
+    JOIN Order_Details ON Orders.Order_ID = Order_Details.Order_ID
+    JOIN Products ON Order_Details.Product_ID = Products.Product_ID
+    WHERE Orders.Client_ID = clientID;
+
+    RETURN totalCost;
+end;
+
+
+-- Przykład użycia funkcji dla klienta o ID równym 1
+SELECT CalculateTotalOrderCostForClient(1) AS TotalOrderCostForClient1;
+
+
+
+
+
+-- Funckja sprawdza, czy określony klient ma aktywne rezerwacje o statusach "Potwierdzone" (2) lub "Przybyłe" (4)
+SELECT CalculateTotalOrderCostForClient(1) AS TotalOrderCostForClient;
+
+CREATE FUNCTION SprawdzRezerwacje(ClientID INT)
+RETURNS BOOLEAN
+BEGIN
+  DECLARE MaRezerwacje BOOLEAN;
+
+  SELECT COUNT(*) INTO MaRezerwacje
+  FROM Reservations
+  WHERE Client_ID = ClientID
+    AND Reservation_Status IN (2, 4); -- Zakładamy, że status 2 to "Potwierdzone", a 4 to "Przybyłe"
+
+  RETURN MaRezerwacje;
+END;
+
+SELECT SprawdzRezerwacje(5) AS MaRezerwacje;
+
+-- Liczbę osób, które dokonały rezerwacji na dany dzień.
+
+CREATE FUNCTION GetClientCountOnDate(target_date DATE)
+RETURNS INTEGER
+BEGIN
+    DECLARE client_count INTEGER;
+
+    SELECT COUNT(DISTINCT c.Client_ID)
+    INTO client_count
+    FROM Clients c
+    JOIN Reservations r ON c.Client_ID = r.Client_ID
+    WHERE target_date BETWEEN DATE(r.Date_From) AND DATE(r.Date_To);
+
+    RETURN client_count;
+END;
+
+
+SELECT GetClientCountOnDate('2024-02-01') AS ClientCountOnDate_2024_01_22;
+

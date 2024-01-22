@@ -1,0 +1,27 @@
+
+-- Procedura, która sprawdza czy klient ma na sobie rezerwacje czy nie
+
+CREATE PROCEDURE CheckReservationForClient(IN clientId INT, OUT hasReservation BOOLEAN)
+BEGIN
+    DECLARE reservationCount INT;
+
+    -- Zlicz ilość rezerwacji dla danego klienta
+    SELECT COUNT(*) INTO reservationCount
+    FROM Reservations
+    WHERE Client_ID = clientId
+      AND Reservation_Status IN (2, 4); -- Uwzględnij tylko rezerwacje potwierdzone (2) i przybyłe (4)
+
+    -- Jeżeli ilość rezerwacji jest większa niż zero, ustaw hasReservation na TRUE, w przeciwnym razie na FALSE
+    IF reservationCount > 0 THEN
+        SET hasReservation = TRUE;
+    ELSE
+        SET hasReservation = FALSE;
+    END IF;
+end;
+
+-- Przykład użycia procedury dla klienta o ID równym 1
+CALL CheckReservationForClient(2, @hasReservation);
+
+-- Wyświetl wynik
+SELECT @hasReservation AS HasReservationForClient1;
+

@@ -1,0 +1,127 @@
+INSERT INTO Clients (Client_ID, First_Name, Last_Name, Phone, NIP)
+VALUES
+(1, 'John', 'Doe', '123456789', '1234567890'),
+(2, 'Jane', 'Smith', '987654321', '0987654321'),
+(3, 'Bob', 'Johnson', '555123456', NULL),
+(4, 'Alice', 'Williams', '777888999', '1112233445'),
+(5, 'Charlie', 'Brown', '111222333', '9876543210'),
+(6, 'Eve', 'Anderson', '444555666', NULL);
+
+
+
+INSERT INTO Roles (Role, Name)
+VALUES
+(1, 'Admin'),
+(2, 'Waiter'),
+(3, 'Chef'),
+(4, 'Client'),
+(5, 'Manager'),
+(6, 'Cashier');
+
+
+
+INSERT INTO Users (User_ID, Client_ID, Role, Email)
+VALUES
+(1, 1, 4, 'john.doe@example.com'),
+(2, 2, 4, 'jane.smith@example.com'),
+(3, 3, 4, 'bob.johnson@example.com'),
+(4, 4, 4, 'alice.williams@example.com'),
+(5, 5, 4, 'charlie.brown@example.com'),
+(6, 6, 4, 'eve.anderson@example.com');
+
+INSERT INTO Reservation_Statuses (Reservation_Status, Name)
+VALUES
+(1, 'Completed'),
+(2, 'Confirmed'),
+(3, 'Cancelled'),
+(4, 'Arrived');
+
+INSERT INTO Reservations (Reservation_ID, Client_ID, Reservation_Status, Date_From, Date_To, Created_Date)
+VALUES
+(1, 1, 1, '2024-02-01 18:00:00', '2024-02-01 20:00:00', '2024-01-15 10:30:00'),
+(2, 2, 2, '2024-02-05 19:30:00', '2024-02-05 21:30:00', '2024-01-20 14:45:00'),
+(3, 3, 3, '2024-02-10 12:00:00', '2024-02-10 14:00:00', '2024-01-25 08:20:00'),
+(4, 4, 1, '2024-02-15 20:00:00', '2024-02-15 22:00:00', '2024-02-01 16:10:00'),
+(5, 5, 2, '2024-02-20 17:30:00', '2024-02-20 19:30:00', '2024-02-05 12:55:00'),
+(6, 6, 4, '2024-02-25 15:00:00', '2024-02-25 17:00:00', '2024-02-10 09:40:00');
+
+INSERT INTO Tables (Table_ID, Seat_Amount)
+VALUES
+(1, 4),
+(2, 2),
+(3, 6),
+(4, 8),
+(5, 3),
+(6, 5);
+
+-- Dla tabeli Reservation_Details
+INSERT INTO Reservation_Details (Reservation_ID, Table_ID, First_Name, Last_Name)
+VALUES
+(1, 1, 'John', 'Doe'),
+(2, 2, 'Jane', 'Smith'),
+(3, 3, 'Bob', 'Johnson'),
+(4, 4, 'Alice', 'Williams'),
+(5, 5, 'Charlie', 'Brown'),
+(6, 6, 'Eve', 'Anderson');
+
+-- Dla tabeli Order_Types
+INSERT INTO Order_Types (Order_Type, Name)
+VALUES
+(1, 'Takeout'),
+(2, 'Dine-in'),
+(3, 'Delivery');
+
+-- Dla tabeli Order_Statuses
+INSERT INTO Order_Statuses (Order_Status, Name)
+VALUES
+(1, 'Confirmed'),
+(2, 'In Progress'),
+(3, 'Completed'),
+(4, 'Cancelled');
+
+-- Dla tabeli Payment_Statuses
+INSERT INTO Payment_Statuses (Payment_Status, Name)
+VALUES
+(1, 'In progress'),
+(2, 'Paid'),
+(3, 'Failed');
+
+-- Dla tabeli Orders
+INSERT INTO Orders (Order_ID, Client_ID, Payment_Status, Order_Status, Order_Type, Order_Date, Created_Date)
+VALUES
+(1, 1, 1, 2, 1, '2024-02-01 12:30:00', '2024-02-01 10:00:00'),
+(2, 2, 2, 4, 2, '2024-02-05 19:30:00', '2024-02-05 18:00:00'),
+(3, 3, 1, 1, 3, '2024-02-10 13:45:00', '2024-02-10 12:30:00'),
+(4, 4, 2, 3, 2, '2024-02-15 21:15:00', '2024-02-15 20:00:00'),
+(5, 5, 2, 4, 1, '2024-02-20 18:45:00', '2024-02-20 18:00:00'),
+(6, 6, 1, 2, 3, '2024-02-25 16:30:00', '2024-02-25 15:00:00');
+
+-- Dla tabeli Categories
+INSERT INTO Categories (Category, Name, Description)
+VALUES
+(1, 'Appetizers', 'Delicious starters to whet your appetite'),
+(2, 'Main Courses', 'Heartwarming and fulfilling main dishes'),
+(3, 'Desserts', 'Sweet delights to satisfy your sweet tooth'),
+(4, 'Beverages', 'Refreshing drinks for all occasions');
+
+-- Dla tabeli Products
+INSERT INTO Products (Product_ID, Category, Name, Description, Price)
+VALUES
+(1, 1, 'Garlic Bread', 'Toasty slices of bread with garlic and butter', 5.99),
+(2, 2, 'Chicken Alfredo', 'Creamy pasta with grilled chicken', 12.99),
+(3, 3, 'Chocolate Brownie', 'Rich and gooey chocolate brownie', 7.99),
+(4, 4, 'Sparkling Water', 'Carbonated and refreshing', 2.49),
+(5, 1, 'Bruschetta', 'Tomato and basil on crispy bread', 6.99),
+(6, 2, 'Grilled Salmon', 'Juicy salmon fillet with herbs', 18.99);
+
+-- Dla tabeli Order_Details
+INSERT INTO Order_Details (Order_ID, Product_ID, Amount)
+VALUES
+(1, 1, 2),
+(2, 3, 1),
+(3, 5, 1),
+(4, 2, 1),
+(5, 4, 3),
+(6, 6, 1);
+
+

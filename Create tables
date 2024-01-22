@@ -1,0 +1,125 @@
+-- CLIENTS
+CREATE TABLE Clients (
+    Client_ID INT PRIMARY KEY NOT NULL,
+    First_Name VARCHAR(50) NOT NULL,
+    Last_Name VARCHAR(50) NOT NULL,
+    Phone VARCHAR(255) NOT NULL UNIQUE,
+    NIP VARCHAR(10)
+);
+
+
+-- ROLES
+CREATE TABLE Roles (
+    Role INT PRIMARY KEY NOT NULL,
+    Name VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- USERS
+CREATE TABLE Users (
+    User_ID INT PRIMARY KEY NOT NULL,
+    Client_ID INT,
+    Role INT NOT NULL,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    FOREIGN KEY (Client_ID) REFERENCES Clients(Client_ID),
+    FOREIGN KEY (Role) REFERENCES Roles(Role),
+    CONSTRAINT CHECK_Email_Format CHECK (Email LIKE '%_@__%.%')
+);
+
+
+
+-- RESERVATION STATUSES
+CREATE TABLE Reservation_Statuses (
+    Reservation_Status INT PRIMARY KEY NOT NULL,
+    Name VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- RESERVATIONS
+CREATE TABLE Reservations (
+    Reservation_ID INT PRIMARY KEY NOT NULL,
+    Client_ID INT NOT NULL,
+    Reservation_Status INT NOT NULL,
+    Date_From DATETIME NOT NULL,
+    Date_To DATETIME NOT NULL,
+    Created_Date DATETIME NOT NULL,
+    CONSTRAINT CHECK_Date_Order CHECK (Date_From < Date_To),
+    CONSTRAINT CHK_ResDates CHECK (Created_Date < Date_From),
+    FOREIGN KEY (Client_ID) REFERENCES Clients(Client_ID),
+    FOREIGN KEY (Reservation_Status) REFERENCES Reservation_Statuses(Reservation_Status)
+);
+
+-- TABLES
+CREATE TABLE Tables (
+    Table_ID INT PRIMARY KEY NOT NULL,
+    Seat_Amount INT NOT NULL CHECK (Seat_Amount > 0)
+);
+
+-- RESERVATION DETAILS
+CREATE TABLE Reservation_Details (
+    Reservation_ID INT NOT NULL,
+    Table_ID INT NOT NULL,
+    First_Name VARCHAR(50) NOT NULL,
+    Last_Name VARCHAR(50) NOT NULL,
+    FOREIGN KEY (Reservation_ID) REFERENCES Reservations(Reservation_ID),
+    FOREIGN KEY (Table_ID) REFERENCES Tables(Table_ID)
+);
+
+
+-- ORDER TYPES
+CREATE TABLE Order_Types (
+    Order_Type INT PRIMARY KEY NOT NULL,
+    Name VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- ORDER_STATUSES
+CREATE TABLE Order_Statuses (
+    Order_Status INT PRIMARY KEY NOT NULL,
+    Name VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- PAYMENT STATUSES
+CREATE TABLE Payment_Statuses (
+    Payment_Status INT PRIMARY KEY NOT NULL,
+    Name VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- ORDERS
+CREATE TABLE Orders (
+    Order_ID INT PRIMARY KEY NOT NULL,
+    Client_ID INT NOT NULL,
+    Payment_Status INT NOT NULL,
+    Order_Status INT NOT NULL,
+    Order_Type INT NOT NULL,
+    Order_Date DATETIME NOT NULL,
+    Created_Date DATETIME NOT NULL,
+    FOREIGN KEY (Client_ID) REFERENCES Clients(Client_ID),
+    FOREIGN KEY (Payment_Status) REFERENCES Payment_Statuses(Payment_Status),
+    FOREIGN KEY (Order_Status) REFERENCES Order_Statuses(Order_Status),
+    FOREIGN KEY (Order_Type) REFERENCES Order_Types(Order_Type),
+    CONSTRAINT CHK_OrderDates CHECK (Created_Date < Order_Date)
+);
+
+-- CATEGORIES
+CREATE TABLE Categories (
+    Category INT PRIMARY KEY NOT NULL,
+    Name VARCHAR(255) NOT NULL UNIQUE,
+    Description VARCHAR(500) NOT NULL
+);
+
+-- PRODUCTS
+CREATE TABLE Products (
+    Product_ID INT PRIMARY KEY NOT NULL,
+    Category INT NOT NULL,
+    Name VARCHAR(255) NOT NULL UNIQUE,
+    Description VARCHAR(500) NOT NULL,
+    Price FLOAT NOT NULL CHECK (Price > 0),
+    FOREIGN KEY (Category) REFERENCES Categories(Category)
+);
+
+-- ORDER DETAILS
+CREATE TABLE Order_Details (
+    Order_ID INT NOT NULL,
+    Product_ID INT NOT NULL,
+    Amount INT NOT NULL CHECK (Amount > 0),
+    FOREIGN KEY (Order_ID) REFERENCES Orders(Order_ID),
+    FOREIGN KEY (Product_ID) REFERENCES Products(Product_ID)
+);

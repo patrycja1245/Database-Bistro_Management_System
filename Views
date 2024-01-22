@@ -1,0 +1,31 @@
+
+-- Widok Klienci z niezapłaconymi zamowieniami:
+CREATE VIEW Clients_With_Unpaid_Orders AS
+SELECT DISTINCT c.Client_ID, c.First_Name, c.Last_Name, c.Phone, c.NIP
+FROM Clients c
+JOIN Orders o ON c.Client_ID = o.Client_ID
+WHERE o.Payment_Status = 1; -- Status 1 oznacza "W trakcie"
+
+SELECT * FROM Clients_With_Unpaid_Orders;
+
+
+-- Widok na klienta z łączną ilością zamówień
+CREATE VIEW Clients_With_Total_Order_Amount AS
+SELECT c.Client_ID, c.First_Name, c.Last_Name, COUNT(o.Order_ID) AS Total_Order_Amount
+FROM Clients c
+LEFT JOIN Orders o ON c.Client_ID = o.Client_ID
+GROUP BY c.Client_ID, c.First_Name, c.Last_Name;
+
+SELECT * FROM Clients_With_Total_Order_Amount;
+
+
+
+-- Widok na odwołana rezerwacje
+CREATE VIEW Orders_With_Cancelled_Reservation AS
+SELECT o.Order_ID, r.Reservation_ID, o.Order_Date
+FROM Orders o
+JOIN Reservations r ON o.Client_ID = r.Client_ID
+WHERE r.Reservation_Status = 3; -- Status 3 oznacza "Anulowana"
+
+SELECT * FROM Orders_With_Cancelled_Reservation;
+

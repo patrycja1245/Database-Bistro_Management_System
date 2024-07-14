@@ -10,7 +10,7 @@ Projekt "System Zarządzania Gastronomią" ma na celu stworzenie kompleksowego s
    - Zarządzanie klientami indywidualnymi i firmowymi.
    - Przechowuje informacje takie jak imię, nazwisko, numer telefonu oraz NIP.
 
-2. **Tabela "Roles":**
+2. **Tabela "Roles"::**
    - Przypisanie ról użytkownikom, np. klient, personel.
 
 3. **Tabela "Users":**

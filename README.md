@@ -38,7 +38,7 @@ Projekt "System Zarządzania Gastronomią" ma na celu stworzenie kompleksowego s
     - Szczegóły zamówienia, zawierające informacje o ilości zamówionych produktów.
 
 11. **Tabela "Payment_Statuses":**
-    - Rejestracja statusów płatności, np. "Opłacone", "Niezakończone".
+    - Rejestracja statusów płatności, np. "Opłacone", "Niezakończone"..
 
 12. **Tabela "Order_Statuses":**
     - Definicje statusów zamówień, np. "W trakcie realizacji", "Zakończone".

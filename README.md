@@ -4,7 +4,17 @@
 
 Projekt "System Zarządzania Gastronomią" ma na celu stworzenie kompleksowego systemu wspomagającego działalność firmy gastronomicznej. System obejmuje różne aspekty zarządzania, takie jak obsługa klientów, rezerwacje stołów, obsługa zamówień, zarządzanie produktami oraz śledzenie płatności. Bazuje na relacyjnej bazie danych, co umożliwia efektywne zarządzanie danymi związanych z obszarem gastronomicznym.
 
+## Cele Projektu
+
+- Umożliwienie efektywnego zarządzania danymi z obszaru gastronomii.
+- Zapewnienie intuicyjnego systemu rezerwacji stołów.
+- Skuteczna obsługa zamówień, produktów i płatności.
+- Ułatwienie śledzenia statusów rezerwacji i zamówień.
+
+# DDL Grand Remove
+
 ## Struktura Tabel
+**zdj relacji**
 
 1. **Tabela "Clients":**
    - Zarządzanie klientami indywidualnymi i firmowymi.
@@ -43,9 +53,5 @@ Projekt "System Zarządzania Gastronomią" ma na celu stworzenie kompleksowego s
 12. **Tabela "Order_Statuses":**
     - Definicje statusów zamówień, np. "W trakcie realizacji", "Zakończone".
 
-## Cele Projektu
+# Views, Trigerry, Inserty, Itp
 
-- Umożliwienie efektywnego zarządzania danymi z obszaru gastronomii.
-- Zapewnienie intuicyjnego systemu rezerwacji stołów.
-- Skuteczna obsługa zamówień, produktów i płatności.
-- Ułatwienie śledzenia statusów rezerwacji i zamówień.
